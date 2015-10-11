@@ -1,0 +1,71 @@
+[user]
+  name = Chris Dahms
+  email = zentrification@gmail.com
+
+[alias]
+  alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | sort
+  br = branch
+  ci = commit
+  co = checkout
+  coh = checkout HEAD
+  com = checkout master
+  # for when you fuckup a commit, git fix or git fix FILE1 FILE2
+  fix = commit --amend -C HEAD
+  graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+  #l = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  l = "!f () { git log --abbrev-commit --date=short --pretty=format:'%h%x00%cd%x00%s%x00%an%x00%d' $@ | gawk -F '\\0' '{ printf \"\\033[31m%s\\033[0m \\033[32m%s\\033[0m  %-80s \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1…\",\"g\",$3), $4, $5 }' | less -R; }; f"
+  la = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short --all
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  ll = log --stat --abbrev-commit
+  lfa = "!f () { git log --graph --color=always --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' $@ | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-80s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1…\",\"g\",$3), $4, $5, $6 }' | less -R; }; f"
+  ls = ls-files
+  review = log -p --max-count=1
+  st = status
+  this = !git init && git add . && git commit -m \"initial commit\"
+
+[branch "master"]
+  remote = origin
+  merge = refs/heads/master
+
+[core]
+  filemode = true
+  logallrefupdates = true
+  whitespace = space-before-tab, trailing-space
+  editor = /usr/bin/vim
+  excludesfile = ~/.gitignore_global
+
+[branch]
+  autosetupmerge = true
+
+[diff]
+  renames = copies
+  mnemonicprefix = true
+
+[help]
+  browser = open
+
+[sendemail]
+  smtpserver = smtp.gmail.com
+  smtpserverport = 587
+  smtpencryption = tls
+  smtpuser = zentrification@gmail.com
+
+[color]
+  ui = auto
+
+[color "diff"]
+  meta = blue bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow bold
+  remote = green bold
+  plain = red bold
+
+[color "status"]
+  added = yellow
+  changed = green bold
+  untracked = blue bold
