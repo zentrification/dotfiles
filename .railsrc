@@ -1,0 +1,4 @@
+--skip-action-cable
+--skip-action-mailer
+--skip-keeps
+--skip-spring
