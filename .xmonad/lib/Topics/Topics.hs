@@ -3,10 +3,8 @@ module Topics.Topics where
 import Data.Maybe
 import Text.Printf (printf)
 
--- downloaded from cabal
-import Actions.DynamicWorkspaceGroups
-
 import XMonad
+import XMonad.Actions.DynamicWorkspaceGroups
 import XMonad.Actions.TopicSpace
 import XMonad.Actions.GridSelect
 import XMonad.Prompt
@@ -16,7 +14,7 @@ import qualified XMonad.StackSet as W
 import Control.Arrow
 
 -- meh duplicated
-myTerminal2 = "gnome-terminal"
+myTerminal2 = "sakura"
 myXPConfig = defaultXPConfig
 
 data TopicItem = TI
@@ -30,9 +28,10 @@ topicGroups :: [TopicItem]
 topicGroups =
  [ TI "home"           "workspace"               (spawnInTopicDir "./home.sh")
  , TI "courtroom"      "workspace/courtroom"     (spawnInTopicDir "./workspace.sh")
- , TI "rothenberg"     "workspace/rothenberg"    (return())
- , TI "healthtalker"   "workspace/healthtalker"  (return())
  , TI "cyclist"        "workspace/cyclist"       (spawnInTopicDir "./workspace.sh")
+ , TI "healthtalker"   "workspace/healthtalker"  (return())
+ , TI "openrounds"     "workspace/openrounds"    (return())
+ , TI "espiritu"       "workspace/espiritu"      (return())
  , TI "misc"           "workspace"               (return())
  ]
 

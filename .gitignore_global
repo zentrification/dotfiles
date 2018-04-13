@@ -10,8 +10,14 @@ ehthumbs.db
 Icon?
 Thumbs.db
 
+# ctags
+tags
+
 # rails
 config/database.yml
+
+# rvm
+.ruby-version
 
 # vim
 .vim-session

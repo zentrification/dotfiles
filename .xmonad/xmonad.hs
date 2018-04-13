@@ -49,7 +49,7 @@ import qualified XMonad.Util.ExtensibleState as XS
 
 myModMask  = mod1Mask
 myShell    = "zsh"
-myTerminal = "gnome-terminal"
+myTerminal = "sakura"
 
 myScreenshotPrompt :: XPConfig -> X ()
 myScreenshotPrompt c = inputPrompt c "Screenshot name" ?+ \name -> io $ spawn ("scrot -s /tmp/" ++ name ++ ".png")
@@ -76,7 +76,7 @@ myLayouts = avoidStruts
             where
               baseLayouts     = maximize (gridLayout ||| threeColLayout)
               gridLayout      = GridRatio (3/2)
-              threeColLayout  = ThreeCol 1 (3/100) (1/2)
+              threeColLayout  = ThreeColMid 1 (3/100) (1/3)
               imLayout        = reflectHoriz $ withIM (1%9) (Role "buddy_list") baseLayouts
 
 ------------------------------------------------------------------------
@@ -86,10 +86,10 @@ myStartupHook = do
   spawnOnce "ssh-add"
   makeWorkspaceGroup "home"
   makeWorkspaceGroup "courtroom"
-  makeWorkspaceGroup "rothenberg"
-  makeWorkspaceGroup "healthtalker"
   makeWorkspaceGroup "cyclist"
-  makeWorkspaceGroup "misc"
+  makeWorkspaceGroup "healthtalker"
+  makeWorkspaceGroup "espiritu"
+  makeWorkspaceGroup "openrounds"
 
 -- https://mail.haskell.org/pipermail/xmonad/2014-May/014114.html
 makeWorkspaceGroup name = do
@@ -162,7 +162,7 @@ myKeys conf@XConfig{modMask=modm} = M.fromList $
   -- mod-{w,e}, Switch to physical/Xinerama screens 1, 2, 3
   -- mod-shift-{w,e}, Move client to screen 1, 2, 3
   [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-    | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+    | (key, sc) <- zip [xK_e, xK_r, xK_w] [0..]
     , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
   ++
   -- mod-[1..9], Switch to workspace N
@@ -175,9 +175,10 @@ myKeys conf@XConfig{modMask=modm} = M.fromList $
 
 main :: IO ()
 main = do
-  spawn "xmobar --screen 0 ~/.xmobarrc1"
-  spawn "xmobar --screen 1 ~/.xmobarrc2"
-  bar <- spawnPipe "xmobar --screen 2 ~/.xmobarrc3"
+  -- spawn "xmobar --screen 0 ~/.xmobarrc1"
+  -- spawn "xmobar --screen 1 ~/.xmobarrc2"
+  -- bar <- spawnPipe "xmobar --screen 2 ~/.xmobarrc3"
+  bar <- spawnPipe "xmobar ~/.xmobarrc"
   nScreens <- countScreens
   -- checkTopicConfig myTopicNames myTopicConfig
   xmonad $ fullscreenSupport $ docks defaults {
@@ -194,7 +195,7 @@ defaults = defaultConfig {
   terminal           = myTerminal,
   workspaces         = myTopicNames,   -- withScreens nScreens myTopicNames
   -- borders
-  borderWidth        = 2,
+  borderWidth        = 4,
   normalBorderColor  = "#111",
   focusedBorderColor = "#24A2FF",
   -- key bindings
