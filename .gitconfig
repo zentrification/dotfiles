@@ -9,6 +9,7 @@
   coh = checkout HEAD
   com = checkout master
   cod = checkout development
+  md = merge development
   ls = ls-files
   st = status --short --branch
   # cleanup a commit
