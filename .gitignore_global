@@ -15,6 +15,7 @@ tags
 
 # rails
 config/database.yml
+config/secrets.yml
 
 # rvm
 .ruby-version

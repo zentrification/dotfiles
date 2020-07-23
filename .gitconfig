@@ -4,11 +4,13 @@
 
 [alias]
   alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | sort
+  authors = shortlog -sn
   ci = commit
   co = checkout
   coh = checkout HEAD
   com = checkout master
   cod = checkout development
+  current-branch = rev-parse --abbrev-ref HEAD
   md = merge development
   ls = ls-files
   st = status --short --branch
@@ -20,11 +22,20 @@
   #l = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
   l = "!f () { git log --abbrev-commit --date=short --pretty=format:'%h%x00%cd%x00%s%x00%an%x00%d' $@ | gawk -F '\\0' '{ printf \"\\033[31m%s\\033[0m \\033[32m%s\\033[0m  %-80s \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1…\",\"g\",$3), $4, $5 }' | less -R; }; f"
   # log all
-  la = log --graph --date=short --all --pretty=format:\"%h %ad | %s%d [%an]\"
+  #la = log --graph --date=short --all --pretty=format:\"%h %ad | %s%d [%an]\"
+  la = "!f () { git log --all --abbrev-commit --date=short --pretty=format:'%h%x00%cd%x00%s%x00%an%x00%d' $@ | gawk -F '\\0' '{ printf \"\\033[31m%s\\033[0m \\033[32m%s\\033[0m  %-80s \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1…\",\"g\",$3), $4, $5 }' | less -R; }; f"
   # log graph
   lg = log --graph --abbrev-commit --date=relative --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
   # log files
   lf = log --stat --abbrev-commit
+  # my commits
+  lm = log --all --author="zentrification@gmail.com" --date=short --pretty=format:\"%h %ad %s%d\"
+  lms = !git log --all --author="zentrification@gmail.com" --date=short --pretty=format:\"@%ad\" --stat | grep -E '@|file changed|files changed' | tr '\n' ' ' | tr '@' '\n'
+  lmss = !git log --all --author="zentrification@gmail.com" --date=short --pretty=format:\"@%ad\" --stat | grep -E '@|file changed|files changed' | tr '\n' ' ' | tr '@' '\n' | sed -E 's/file[s ]+changed//' | sed -E 's/insertion[s ]*[()+]+//' | sed -E 's/deletion[s]*[()-]+//'
+  lz = !git log --all --author="zentrification@gmail.com" --date=short --pretty=format:\"@%ad %s\" --stat | grep -E '@|file changed|files changed'
+  # edit all modified or conflicting files
+  editm = !vim -p $(git st | grep " M " | awk '{print $2}')
+  editc = !vim -p $(git st | grep "^U" | awk '{print $2}')
 
 [branch "master"]
   remote = origin
